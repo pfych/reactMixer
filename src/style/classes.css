@@ -1,0 +1,37 @@
+.AppBody {
+  padding: 5px;
+  background-color: #33313b;
+}
+
+.MixerArea {
+  color: white;
+}
+
+.Mixer {
+  width: auto;
+}
+
+.Top {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.Middle {
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+}
+
+.Bottom {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.BoButton {
+  width: 100%;
+}
+
+.Title {
+  color: black;
+  text-align: center;
+}
