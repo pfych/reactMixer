@@ -20,7 +20,7 @@ export async function getIndex (name) {
 
 }
 
-export async function getOutIndex (name) {
-  return (await exec(`pacmd list-sinks | tr '\\n' '\\r' | perl -pe 's/ *index: ([0-9]+).+?name: <([^\\r]+)>\\r.+?(?=index:|$)/\\2:\\1\\r/g' | tr '\\r' '\\n'`))
-    .stdout.match(`${name}:.*`)[0].replace(`${name}:`, "")
+export async function getSinkIndex (name) {
+  return (await exec(`pacmd list-sinks | grep -E '(index|device.description)'`))
+    .stdout.replace(/\n/g, " ").match(`index: [0-9]*[ \t]*device.description = "${name}"`)[0].replace(`device.description = "${name}"`, "").replace("index: ", "").replace(/\s/g, "")
 }

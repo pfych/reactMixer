@@ -2,7 +2,7 @@
 // I APOLOGISE TO ANYONE WHO IS READING THIS IN ADVANCE
 
 import React, { Component } from 'react';
-import { getApps, getOutputs } from './functions/getters'
+import { getApps, getIndex, getOutputs, getSinkIndex } from './functions/getters'
 const { promisify } = require('util');
 const exec = promisify(require('child_process').exec);
 
@@ -27,10 +27,7 @@ class Mixer extends Component {
   async newOutput (name, input, output) {
     let sinkID = (await exec(`pactl load-module module-null-sink sink_name="${name}" sink_properties=device.description="${name}"`)).stdout.replace("\n", "")
     let moduleID = (await exec(`pactl load-module module-loopback source="${name}.monitor" sink=${output} rate=44100`)).stdout.replace("\n", "")
-
-
-    // Need to move sink output here but inputID changes when a module is created so I causes the audio forwarding to be incorrect
-    // await exec(`pacmd move-sink-input ${getIndex(input)} sinkID`) // Get error because getIndex() returns apps old sink ID
+    await exec(`pacmd move-sink-input ${await getSinkIndex(name)} ${await getIndex(input)}`)
 
     let newState = this.state.existing.concat({ name: name, sinkID: sinkID, moduleID: moduleID })
     this.setState({existing: newState})
